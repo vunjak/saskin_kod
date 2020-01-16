@@ -39,8 +39,11 @@ void ispis(char a[3][3]) {
                 printf("%c|", a[l][k]);
             }
         }
-     }
+
+    }
+
 }
+
 
 int main(int argc , char *argv[])
 {
@@ -51,7 +54,8 @@ int main(int argc , char *argv[])
     char server_message1[DEFAULT_BUFLEN];
     char server_message2[3][3];
     char server_message3[DEFAULT_BUFLEN];
-    char result[DEFAULT_BUFLEN];
+    char server_message4[1];
+    char result[15];
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
     if (sock == -1)
@@ -72,60 +76,32 @@ int main(int argc , char *argv[])
     }
 
     puts("Connected\n");
-    if(recv(sock , server_message1 , 16, 0) < 0)
-    {
-                        puts("Receive failed");
-                        return 1;
-    }
-
+    recv(sock , server_message1 , 16, 0);
     puts(server_message1);
 
-    char str[]="game_over";
-    while(1) {
-   	 if(recv(sock , server_message2 , 9 , 0) < 0)
-	 {
-                       puts("Receive failed");
-                        return 1;
-         }
-
-	 if(!strcmp(server_message2, str)) {
-		 break;
-	 }
+    int game_over_signal = 1;
+    while(game_over_signal) {
+   	 recv(sock , server_message2 , 9 , 0);
    	 ispis(server_message2);
-    	 if(recv(sock , server_message3 , 14, 0) < 0)
-	 {
-                        puts("Receive failed");
-                        return 1;
-         }
+    	 recv(sock , server_message3 , 14, 0);
     	 puts(server_message3);
 
+    //Send some data
    	 scanf("%s", message);
    	 if( send(sock , message , strlen(message), 0) < 0)
    	 {
        		 puts("Send failed");
        		 return 1;
    	 }
-          if(recv(sock , server_message2 , 9 , 0) < 0)
-         {
-                       puts("Receive failed");
-                        return 1;
-         }
-	 ispis(server_message2);
+	 recv(sock, server_message4, strlen(server_message4), 0);
+	 game_over_signal=atoi(server_message4);
 
     }
 
-    if(recv(sock , server_message2 , 9 , 0) < 0)
-    {
-                        puts("Receive failed");
-                        return 1;
-    }
+    recv(sock , server_message2 , 9 , 0);
     ispis(server_message2);
 
-    if(recv(sock , result , 9 , 0) < 0) 
-    {
-                        puts("Receive failed");
-                        return 1;
-    }
+    recv(sock , result , strlen(result) , 0);
     puts(result);
 
     close(sock);
