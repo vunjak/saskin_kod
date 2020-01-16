@@ -14,7 +14,11 @@ int main()
     int ret_val;
     char entry;
     char buffer[BUF_LEN];
-
+	
+    printf("Welcome to the garage door user app\n");
+    printf("Please choose from one of the following options:\n");
+    printf("\nO-open,\n\nS-stop,\n\nC-close\n\n");
+	
 	while(1)
 	{
 		scanf("%c", &entry);
