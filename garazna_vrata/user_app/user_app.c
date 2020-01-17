@@ -22,7 +22,7 @@ int main()
 	while(1)
 	{
 		scanf("%c", &entry);
-		if(entry == 'o' || entry == 'c' || entry == 's')
+		if(entry == 'o' || entry == 'c' || entry == 's' || entry == 'O' || entry == 'C' || entry == 'S')
 		{
 			file_desc = open("garage", O_RDWR);
 			if(file_desc < 0)
